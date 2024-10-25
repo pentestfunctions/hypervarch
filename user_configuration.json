@@ -7,15 +7,15 @@
     "bootloader": "Systemd-boot",
     "config_version": "2.8.6",
     "custom-commands": [
-        "mkdir -p /mnt/root/hypervarch",
-        "cp -rv /root/hypervarch/* /mnt/root/hypervarch/",
-        "cp -v /root/hypervarch/scripts/first-boot.service /mnt/etc/systemd/system/",
-        "cp -v /root/hypervarch/scripts/welcome_message.sh /mnt/usr/local/bin/",
-        "chmod +x /mnt/usr/local/bin/welcome_message.sh",
+        "mkdir -p /mnt/archinstall/root/hypervarch",
+        "cp -rv /root/hypervarch/* /mnt/archinstall/root/hypervarch/",
+        "cp -v /root/hypervarch/scripts/first-boot.service /mnt/archinstall/etc/systemd/system/",
+        "cp -v /root/hypervarch/scripts/welcome_message.sh /mnt/archinstall/usr/local/bin/",
+        "chmod +x /mnt/archinstall/usr/local/bin/welcome_message.sh",
         "arch-chroot /mnt systemctl enable first-boot.service",
-        "ls -la /mnt/root/hypervarch/ > /mnt/root/copy_verification.log",
-        "ls -la /mnt/usr/local/bin/welcome_message.sh >> /mnt/root/copy_verification.log",
-        "ls -la /mnt/etc/systemd/system/first-boot.service >> /mnt/root/copy_verification.log"
+        "ls -la /mnt/archinstall/root/hypervarch/ > /mnt/archinstall/root/copy_verification.log",
+        "ls -la /mnt/archinstall/usr/local/bin/welcome_message.sh >> /mnt/archinstall/root/copy_verification.log",
+        "ls -la /mnt/archinstall/etc/systemd/system/first-boot.service >> /mnt/archinstall/root/copy_verification.log"
     ],
     "debug": false,
     "disk_config": {
