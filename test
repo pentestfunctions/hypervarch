@@ -1,0 +1,4 @@
+for monitor in `xfconf-query -c xfce4-desktop -p /backdrop -l | grep -e "screen0/.*workspace0$" | cut -d "/" -f 3 | sort -u`; do
+    xfconf-query --create -c xfce4-desktop -p /backdrop/screen0/$monitor/workspace0/last-image -t string -s "/home/robot/pictures/background.png"
+    xfconf-query --create -c xfce4-desktop -p /backdrop/screen0/$monitor/workspace0/image-style -t int -s 5
+done
