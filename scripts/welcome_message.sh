@@ -40,10 +40,6 @@ echo "   • Your password is: robot"
 echo "   • Caps Lock will affect your password"
 
 echo -e "\n${RED}Note:${NC} This message will only show once on first boot."
-echo -e "You can view it again by running: cat ~/.welcome_message\n"
-
-# Remove autostart entry
-rm -f ~/.config/autostart/welcome.desktop 2>/dev/null
 
 echo -e "${GREEN}Press Enter to start using your system...${NC}"
 read
