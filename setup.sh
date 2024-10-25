@@ -43,3 +43,4 @@ else
 fi
 
 echo "Installation completed!"
+reboot
