@@ -134,6 +134,9 @@
         "lolcat",
         "rustscan",
         "nmap",
+        "inetutils",
+        "exploit-db",
+        "feroxbuster",
         "xfce4-terminal"
     ],
     "parallel downloads": 0,
