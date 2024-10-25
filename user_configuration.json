@@ -9,13 +9,10 @@
     "custom-commands": [
         "git clone https://github.com/pentestfunctions/hypervarch.git /home/robot/hypervarch",
         
-        # Create a script that will be executed after user login
         "mkdir -p /home/robot/.config/autostart",
         
-        # Create the desktop entry for autostart
         "cat > /home/robot/.config/autostart/firstboot-scripts.desktop << 'EOL'\n[Desktop Entry]\nType=Application\nName=First Boot Scripts\nExec=xfce4-terminal --hold -e '/home/robot/hypervarch/scripts/run_scripts.sh'\nTerminal=false\nHidden=false\nEOL",
         
-        # Create the script runner
         "cat > /home/robot/hypervarch/scripts/run_scripts.sh << 'EOL'\n#!/bin/bash\ncd /home/robot/hypervarch/scripts\nfor script in *.sh; do\n  if [ \"$script\" != \"run_scripts.sh\" ] && [ -f \"$script\" ]; then\n    echo \"Running $script...\"\n    chmod +x \"$script\"\n    ./\"$script\"\n  fi\ndone\necho \"All scripts completed. Press any key to close.\"\nread -n 1\nrm -f /home/robot/.config/autostart/firstboot-scripts.desktop\nEOL",
         
         # Set proper ownership and permissions
