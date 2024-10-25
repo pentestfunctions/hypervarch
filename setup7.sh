@@ -110,11 +110,13 @@ chmod +x hypervarch/scripts/post_install.sh
 chmod +x hypervarch/scripts/welcome_message.sh
 
 # Create temporary configuration with post-install commands
-jq '.custom-commands = [
-    "cp /root/hypervarch/scripts/welcome_message.sh /usr/local/bin/",
-    "cp /root/hypervarch/scripts/welcome-message.service /etc/systemd/system/",
-    "bash /root/hypervarch/scripts/post_install.sh"
-]' hypervarch/user_configuration.json > temp_config.json || { echo "Failed to modify configuration"; exit 1; }
+jq '. + {
+    "custom-commands": [
+        "cp /root/hypervarch/scripts/welcome_message.sh /usr/local/bin/",
+        "cp /root/hypervarch/scripts/welcome-message.service /etc/systemd/system/",
+        "bash /root/hypervarch/scripts/post_install.sh"
+    ]
+}' hypervarch/user_configuration.json > temp_config.json || { echo "Failed to modify configuration"; exit 1; }
 
 # Move the temporary config to replace the original
 mv temp_config.json hypervarch/user_configuration.json
