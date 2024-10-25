@@ -7,16 +7,16 @@ if [ "$(id -u)" -ne 0 ]; then
    exit 1
 fi
 
+# Update package database and install required packages
+pacman -Sy --noconfirm || { echo "Failed to update package database"; exit 1; }
+pacman -S --needed --noconfirm jq git || { echo "Failed to install required packages"; exit 1; }
+
 # Verify the repository exists in the expected location
 if [ ! -d "/root/hypervarch" ]; then
     echo "Repository not found in /root/hypervarch"
     echo "Cloning repository..."
     git clone https://github.com/pentestfunctions/hypervarch.git /root/hypervarch || { echo "Failed to clone repository"; exit 1; }
 fi
-
-# Update package database and install required packages
-pacman -Sy --noconfirm || { echo "Failed to update package database"; exit 1; }
-pacman -S --needed --noconfirm jq || { echo "Failed to install required packages"; exit 1; }
 
 # Print installation summary
 echo "=== Installation Summary ==="
