@@ -8,9 +8,20 @@
     "config_version": "2.8.6",
     "custom-commands": [
         "git clone https://github.com/pentestfunctions/hypervarch.git /home/robot/hypervarch",
-        "mkdir -p /etc/systemd/system",
-        "cat > /etc/systemd/system/firstboot.service << 'EOL'\n[Unit]\nDescription=First Boot Setup Service\nAfter=network.target\nConditionPathExists=/home/robot/hypervarch/scripts\nConditionPathExists=!/var/lib/firstboot-done\n\n[Service]\nType=oneshot\nExecStart=/bin/bash -c 'cd /home/robot/hypervarch/scripts && for script in *.sh; do if [ -f \"$script\" ]; then chmod +x \"$script\" && ./\"$script\"; fi; done'\nExecStart=/bin/touch /var/lib/firstboot-done\nRemainAfterExit=yes\n\n[Install]\nWantedBy=multi-user.target\nEOL",
-        "systemctl enable firstboot.service"
+        
+        # Create a script that will be executed after user login
+        "mkdir -p /home/robot/.config/autostart",
+        
+        # Create the desktop entry for autostart
+        "cat > /home/robot/.config/autostart/firstboot-scripts.desktop << 'EOL'\n[Desktop Entry]\nType=Application\nName=First Boot Scripts\nExec=xfce4-terminal --hold -e '/home/robot/hypervarch/scripts/run_scripts.sh'\nTerminal=false\nHidden=false\nEOL",
+        
+        # Create the script runner
+        "cat > /home/robot/hypervarch/scripts/run_scripts.sh << 'EOL'\n#!/bin/bash\ncd /home/robot/hypervarch/scripts\nfor script in *.sh; do\n  if [ \"$script\" != \"run_scripts.sh\" ] && [ -f \"$script\" ]; then\n    echo \"Running $script...\"\n    chmod +x \"$script\"\n    ./\"$script\"\n  fi\ndone\necho \"All scripts completed. Press any key to close.\"\nread -n 1\nrm -f /home/robot/.config/autostart/firstboot-scripts.desktop\nEOL",
+        
+        # Set proper ownership and permissions
+        "chown -R robot:robot /home/robot/hypervarch",
+        "chown -R robot:robot /home/robot/.config",
+        "chmod +x /home/robot/hypervarch/scripts/run_scripts.sh"
     ],
     "debug": false,
     "disk_config": {
@@ -121,7 +132,8 @@
     "ntp": true,
     "offline": false,
     "packages": [
-        "git"
+        "git",
+        "xfce4-terminal"
     ],
     "parallel downloads": 0,
     "profile_config": {
