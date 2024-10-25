@@ -129,6 +129,11 @@
     "offline": false,
     "packages": [
         "git",
+        "unzip",
+        "firefox",
+        "lolcat",
+        "rustscan",
+        "nmap",
         "xfce4-terminal"
     ],
     "parallel downloads": 0,
