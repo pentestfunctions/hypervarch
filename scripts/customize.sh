@@ -12,10 +12,10 @@ fi
 install_wallpaper_settings() {
     cd "$initial_dir"
     mkdir -p ~/Pictures
-    sudo cp resources/background.jpg ~/Pictures/background.jpg
+    sudo cp resources/background.png ~/Pictures/background.png
     sudo cp resources/background.bmp /etc/background.bmp
-    xfconf-query -c xfce4-desktop -l -v | grep image-path | grep -oE '^/[^ ]+' | xargs -I % xfconf-query -c xfce4-desktop -p % -s ~/Pictures/background.jpg
-    xfconf-query -c xfce4-desktop -l -v | grep last-image | grep -oE '^/[^ ]+' | xargs -I % xfconf-query -c xfce4-desktop -p % -s ~/Pictures/background.jpg
+    xfconf-query -c xfce4-desktop -l -v | grep image-path | grep -oE '^/[^ ]+' | xargs -I % xfconf-query -c xfce4-desktop -p % -s ~/Pictures/background.png
+    xfconf-query -c xfce4-desktop -l -v | grep last-image | grep -oE '^/[^ ]+' | xargs -I % xfconf-query -c xfce4-desktop -p % -s ~/Pictures/background.png
 }
 
 # Configure our terminal settings
