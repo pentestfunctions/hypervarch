@@ -1,0 +1,14 @@
+[Unit]
+Description=First Boot Welcome Message
+After=network.target display-manager.service
+
+[Service]
+Type=oneshot
+RemainAfterExit=yes
+Environment=DISPLAY=:0
+Environment=XAUTHORITY=/home/robot/.Xauthority
+ExecStart=/usr/local/bin/welcome_message.sh
+User=robot
+
+[Install]
+WantedBy=multi-user.target
