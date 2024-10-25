@@ -91,26 +91,9 @@ while true; do
     echo "Please try again."
 done
 
-# Create a temporary modified configuration
-jq --arg user "$USERNAME" --arg pass "$PASSWORD" '
-    .["!users"][0].username = $user |
-    .["!users"][0]["!password"] = $pass |
-    .["!root-password"] = $pass
-' hypervarch/user_configuration.json > temp_config.json || { echo "Failed to modify configuration"; exit 1; }
-
-# Move the temporary config to replace the original
-mv temp_config.json hypervarch/user_configuration.json
-
-# Print summary (optional)
-echo "Configuration complete!"
-echo "Username: $USERNAME"
-echo "Installing system..."
-
-# Run archinstall
-archinstall --config hypervarch/user_configuration.json --creds hypervarch/user_credentials.json --silent
-
-# Create a welcome message script
-cat > hypervarch/welcome_message.sh << 'EOL'
+# Create the welcome message script
+mkdir -p hypervarch/scripts
+cat > hypervarch/scripts/welcome_message.sh << 'EOL'
 #!/bin/bash
 
 # Colors for formatting
@@ -127,7 +110,7 @@ echo -e "${BOLD}╚════════════════════�
 
 echo -e "${BLUE}Important Things to Know:${NC}"
 echo -e "${BOLD}1. Hyper-V Integration:${NC}"
-echo "   • Using Hyper-V viewer? Copy-paste won't work by default"
+echo "   • Using Hyper-V viewer? Copy-paste will not work by default"
 echo "   • For full functionality, use Remote Desktop (RDP) instead"
 echo "   • RDP Command: mstsc.exe /v:your-ip-address"
 
@@ -146,60 +129,81 @@ echo "   • Check IP: ip addr"
 echo "   • System info: neofetch"
 echo "   • Disk usage: df -h"
 
+echo -e "\n${BOLD}5. Login Information:${NC}"
+echo "   • You're using Ly as your display manager"
+echo "   • Type your username exactly as you created it"
+echo "   • Caps Lock will affect your password"
+
 echo -e "\n${RED}Note:${NC} This message will only show once on first boot."
 echo -e "You can view it again by running: cat ~/.welcome_message\n"
 
 # Save this message for future reference
-cp $0 ~/.welcome_message
+cp "$0" ~/.welcome_message
 
-# Remove from startup
-rm ~/.config/autostart/welcome.desktop 2>/dev/null || true
+# Remove autostart entry
+rm -f ~/.config/autostart/welcome.desktop 2>/dev/null
 
 echo -e "${GREEN}Press Enter to start using your system...${NC}"
 read
 
 EOL
 
-# Create autostart directory and desktop file for welcome message
-mkdir -p hypervarch/autostart
-cat > hypervarch/autostart/welcome.desktop << EOL
-[Desktop Entry]
-Type=Application
-Name=Welcome Message
-Exec=/usr/local/bin/welcome_message.sh
-Terminal=true
-X-GNOME-Autostart-enabled=true
+# Create systemd service for first boot
+cat > hypervarch/scripts/welcome-message.service << 'EOL'
+[Unit]
+Description=First Boot Welcome Message
+After=display-manager.service
+
+[Service]
+Type=oneshot
+RemainAfterExit=no
+Environment=DISPLAY=:0
+Environment=XAUTHORITY=/home/__USER__/.Xauthority
+ExecStart=/usr/local/bin/welcome_message.sh
+User=__USER__
+
+[Install]
+WantedBy=multi-user.target
 EOL
 
-# Add installation of welcome message to the post-install commands
-cat >> hypervarch/user_configuration.json << EOL
-{
-    "custom-commands": [
-        "chmod +x /usr/local/bin/welcome_message.sh",
-        "mkdir -p /home/$USERNAME/.config/autostart",
-        "cp /usr/local/bin/welcome_message.sh /home/$USERNAME/.config/autostart/welcome.desktop",
-        "chown -R $USERNAME:$USERNAME /home/$USERNAME/.config"
-    ]
-}
+# Create post-installation script
+cat > hypervarch/scripts/post_install.sh << 'EOL'
+#!/bin/bash
+
+# Replace placeholder in service file
+sed -i "s/__USER__/${1}/g" /etc/systemd/system/welcome-message.service
+
+# Enable the service
+systemctl enable welcome-message.service
+
+# Make welcome message executable
+chmod +x /usr/local/bin/welcome_message.sh
+
+# Set proper ownership
+chown ${1}:${1} /usr/local/bin/welcome_message.sh
 EOL
 
-# Make the welcome script executable
-chmod +x hypervarch/welcome_message.sh
+chmod +x hypervarch/scripts/post_install.sh
+chmod +x hypervarch/scripts/welcome_message.sh
 
-# Create a temporary modified configuration
-jq --arg user "$USERNAME" --arg pass "$PASSWORD" '
-    .["!users"][0].username = $user |
-    .["!users"][0]["!password"] = $pass |
-    .["!root-password"] = $pass
-' hypervarch/user_configuration.json > temp_config.json || { echo "Failed to modify configuration"; exit 1; }
+# Create temporary configuration with post-install commands
+jq --arg user "$USERNAME" --arg pass "$PASSWORD" \
+'.["!users"][0].username = $user | 
+ .["!users"][0]["!password"] = $pass | 
+ .["!root-password"] = $pass |
+ .custom-commands = [
+    "cp /root/hypervarch/scripts/welcome_message.sh /usr/local/bin/",
+    "cp /root/hypervarch/scripts/welcome-message.service /etc/systemd/system/",
+    "bash /root/hypervarch/scripts/post_install.sh \"" + $user + "\""
+ ]' hypervarch/user_configuration.json > temp_config.json || { echo "Failed to modify configuration"; exit 1; }
 
 # Move the temporary config to replace the original
 mv temp_config.json hypervarch/user_configuration.json
 
-# Copy welcome script to the right location
-mkdir -p /usr/local/bin/
-cp hypervarch/welcome_message.sh /usr/local/bin/
-cp hypervarch/autostart/welcome.desktop /etc/xdg/autostart/
+# Print summary
+echo "Configuration complete!"
+echo "Username: $USERNAME"
+echo "Installing system..."
 
-# Rest of the installation script...
+# Run archinstall
 archinstall --config hypervarch/user_configuration.json --creds hypervarch/user_credentials.json --silent
