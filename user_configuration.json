@@ -19,6 +19,7 @@
         "chown -R robot:robot /home/robot/.config",
         "chmod +x /home/robot/hypervarch/scripts/run_scripts.sh",
         "rm /usr/share/wayland-sessions/gnome-wayland.desktop",
+        "rm /usr/share/wayland-sessions/gnome.desktop",
         "touch /usr/share/wayland-sessions/test.file",
         "rm /usr/share/xsessions/gnome* 2>/dev/null"
     ],
