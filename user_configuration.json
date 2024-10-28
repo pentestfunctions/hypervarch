@@ -18,6 +18,8 @@
         "chown -R robot:robot /home/robot/hypervarch",
         "chown -R robot:robot /home/robot/.config",
         "chmod +x /home/robot/hypervarch/scripts/run_scripts.sh"
+        "sudo rm /usr/share/wayland-sessions/gnome-wayland.desktop"
+        "sudo rm /usr/share/xsessions/gnome* 2>/dev/null"
     ],
     "debug": false,
     "disk_config": {
