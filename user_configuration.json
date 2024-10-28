@@ -12,7 +12,7 @@
         "mkdir -p /home/robot/.config/xfce4/terminal",
         "cp /home/robot/hypervarch/scripts/resources/background.png /home/robot/Pictures/background.png",
         "cp /home/robot/hypervarch/scripts/resources/background.bmp /etc/background.bmp",
-        "cp /home/robot/hypervarch/scripts/resources/master.zip /tmp/master.zip",
+        "cp /home/robot/hypervarch/scripts/resources/gtk-master.zip /tmp/master.zip",
         "unzip -o /tmp/master.zip -d /tmp/master",
         "mv /tmp/master/gtk-master /usr/share/themes/Dracula",
         "rm /tmp/master.zip",
