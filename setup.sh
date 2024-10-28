@@ -43,4 +43,5 @@ else
 fi
 
 echo "Installation completed!"
-reboot
+chroot /mnt/archinstall rm /usr/share/wayland-sessions/gnome-wayland.desktop
+/sbin/reboot -f
