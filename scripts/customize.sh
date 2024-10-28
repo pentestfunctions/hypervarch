@@ -68,3 +68,5 @@ sudo cp resources/xfce4-panel-settings.tar.gz /tmp/
 tar -xzf /tmp/xfce4-panel-settings.tar.gz -C ~/.config/xfce4/panel
 source ~/.bashrc
 install_dracula_theme
+sudo rm /usr/share/wayland-sessions/gnome-wayland.desktop 2>/dev/null || true
+sudo rm /usr/share/xsessions/gnome* 2>/dev/null || true
