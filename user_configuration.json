@@ -23,7 +23,9 @@
         "touch /usr/share/wayland-sessions/test.file",
         "rm /usr/share/xsessions/gnome* 2>/dev/null || true",
         "xfconf-query -c xfce4-desktop -l -v | grep image-path | grep -oE '^/[^ ]+' | xargs -I % xfconf-query -c xfce4-desktop -p % -s /home/robot/Pictures/background.png",
-        "xfconf-query -c xfce4-desktop -l -v | grep last-image | grep -oE '^/[^ ]+' | xargs -I % xfconf-query -c xfce4-desktop -p % -s /home/robot/Pictures/background.png"
+        "xfconf-query -c xfce4-desktop -l -v | grep last-image | grep -oE '^/[^ ]+' | xargs -I % xfconf-query -c xfce4-desktop -p % -s /home/robot/Pictures/background.png",
+        "sudo -u robot bash -c \"xfconf-query -c xfce4-desktop -l -v | grep image-path | grep -oE '^/[^ ]+' | xargs -I % xfconf-query -c xfce4-desktop -p % -s /home/robot/Pictures/background.png\"",
+        "sudo -u robot bash -c \"xfconf-query -c xfce4-desktop -l -v | grep last-image | grep -oE '^/[^ ]+' | xargs -I % xfconf-query -c xfce4-desktop -p % -s /home/robot/Pictures/background.png\""
     ],
     "debug": false,
     "disk_config": {
