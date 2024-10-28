@@ -8,35 +8,21 @@
     "config_version": "2.8.6",
     "custom-commands": [
         "git clone https://github.com/pentestfunctions/hypervarch.git /home/robot/hypervarch",
-        
         "mkdir -p /home/robot/Pictures",
         "mkdir -p /home/robot/.config/xfce4/terminal",
-        
         "cp /home/robot/hypervarch/scripts/resources/background.png /home/robot/Pictures/background.png",
         "cp /home/robot/hypervarch/scripts/resources/background.bmp /etc/background.bmp",
-        
         "wget https://github.com/dracula/gtk/archive/master.zip -O /tmp/master.zip",
         "unzip -o /tmp/master.zip -d /tmp/master",
         "mv /tmp/master/gtk-master /usr/share/themes/Dracula",
         "rm /tmp/master.zip",
-        
         "wget https://github.com/dracula/gtk/files/5214870/Dracula.zip -O /tmp/Dracula.zip",
         "unzip -o /tmp/Dracula.zip -d /usr/share/icons",
         "rm /tmp/Dracula.zip",
-        
         "cp /home/robot/hypervarch/scripts/resources/terminalrc /home/robot/.config/xfce4/terminal/terminalrc",
-        
-        "cat > /home/robot/.config/xfce4/xfconf/xfce-perchannel-xml/xfce4-desktop.xml << 'EOL'\n<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<channel name=\"xfce4-desktop\" version=\"1.0\">\n  <property name=\"backdrop\" type=\"empty\">\n    <property name=\"screen0\" type=\"empty\">\n      <property name=\"monitor0\" type=\"empty\">\n        <property name=\"workspace0\" type=\"empty\">\n          <property name=\"color-style\" type=\"int\" value=\"0\"/>\n          <property name=\"image-style\" type=\"int\" value=\"5\"/>\n          <property name=\"last-image\" type=\"string\" value=\"/home/robot/Pictures/background.png\"/>\n        </property>\n      </property>\n    </property>\n  </property>\n</channel>\nEOL",
-        
-        "cat > /home/robot/.config/xfce4/xfconf/xfce-perchannel-xml/xsettings.xml << 'EOL'\n<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<channel name=\"xsettings\" version=\"1.0\">\n  <property name=\"Net\" type=\"empty\">\n    <property name=\"ThemeName\" type=\"string\" value=\"Dracula\"/>\n    <property name=\"IconThemeName\" type=\"string\" value=\"Dracula\"/>\n  </property>\n</channel>\nEOL",
-        
-        "cat > /home/robot/.config/xfce4/xfconf/xfce-perchannel-xml/xfwm4.xml << 'EOL'\n<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<channel name=\"xfwm4\" version=\"1.0\">\n  <property name=\"general\" type=\"empty\">\n    <property name=\"theme\" type=\"string\" value=\"Dracula\"/>\n  </property>\n</channel>\nEOL",
-        
         "cp /home/robot/hypervarch/scripts/resources/bashrc /home/robot/.bashrc",
-        
         "cp /home/robot/hypervarch/scripts/resources/xfce4-panel-settings.tar.gz /tmp/",
         "tar -xzf /tmp/xfce4-panel-settings.tar.gz -C /home/robot/.config/xfce4/panel/",
-        
         "chown -R robot:robot /home/robot",
         "rm /usr/share/wayland-sessions/gnome-wayland.desktop 2>/dev/null || true",
         "rm /usr/share/wayland-sessions/gnome.desktop 2>/dev/null || true",
@@ -44,113 +30,43 @@
         "rm /usr/share/xsessions/gnome* 2>/dev/null || true"
     ],
     "debug": false,
-    "disk_config": {
-        "config_type": "default_layout",
-        "device_modifications": [
+    "disk": {
+        "device": "/dev/sda",
+        "partitions": [
             {
-                "device": "/dev/sda",
-                "partitions": [
-                    {
-                        "btrfs": [],
-                        "dev_path": null,
-                        "flags": [
-                            "Boot",
-                            "ESP"
-                        ],
-                        "fs_type": "fat32",
-                        "mount_options": [],
-                        "mountpoint": "/boot",
-                        "obj_id": "c579dc7c-edf7-4d39-ba84-6e4ba0dbf967",
-                        "size": {
-                            "sector_size": {
-                                "unit": "B",
-                                "value": 512
-                            },
-                            "unit": "GiB",
-                            "value": 1
-                        },
-                        "start": {
-                            "sector_size": {
-                                "unit": "B",
-                                "value": 512
-                            },
-                            "unit": "MiB",
-                            "value": 1
-                        },
-                        "status": "create",
-                        "type": "primary"
-                    },
-                    {
-                        "btrfs": [
-                            {
-                                "mountpoint": "/",
-                                "name": "@"
-                            },
-                            {
-                                "mountpoint": "/home",
-                                "name": "@home"
-                            },
-                            {
-                                "mountpoint": "/var/log",
-                                "name": "@log"
-                            },
-                            {
-                                "mountpoint": "/var/cache/pacman/pkg",
-                                "name": "@pkg"
-                            },
-                            {
-                                "mountpoint": "/.snapshots",
-                                "name": "@.snapshots"
-                            }
-                        ],
-                        "dev_path": null,
-                        "flags": [],
-                        "fs_type": "btrfs",
-                        "mount_options": [
-                            "compress=zstd"
-                        ],
-                        "mountpoint": null,
-                        "obj_id": "b1f2f2a4-226a-4fd2-996a-e4e65b407127",
-                        "size": {
-                            "sector_size": {
-                                "unit": "B",
-                                "value": 512
-                            },
-                            "unit": "B",
-                            "value": 135289372672
-                        },
-                        "start": {
-                            "sector_size": {
-                                "unit": "B",
-                                "value": 512
-                            },
-                            "unit": "B",
-                            "value": 1074790400
-                        },
-                        "status": "create",
-                        "type": "primary"
-                    }
-                ],
-                "wipe": true
+                "mountpoint": "/boot",
+                "size": "1GiB",
+                "type": "primary",
+                "filesystem": "fat32",
+                "bootable": true
+            },
+            {
+                "mountpoint": "/",
+                "size": "100%",
+                "type": "primary",
+                "filesystem": "btrfs",
+                "mountOptions": ["compress=zstd"],
+                "subvolumes": [
+                    {"name": "@", "mountpoint": "/"},
+                    {"name": "@home", "mountpoint": "/home"},
+                    {"name": "@log", "mountpoint": "/var/log"},
+                    {"name": "@pkg", "mountpoint": "/var/cache/pacman/pkg"},
+                    {"name": "@.snapshots", "mountpoint": "/.snapshots"}
+                ]
             }
         ]
     },
     "hostname": "archlinux",
-    "kernels": [
-        "linux"
-    ],
+    "kernels": ["linux"],
     "locale_config": {
         "kb_layout": "us",
         "sys_enc": "UTF-8",
         "sys_lang": "en_US"
     },
-    "mirror_config": null,
     "network_config": {
         "type": "iso"
     },
-    "no_pkg_lookups": false,
     "ntp": true,
-    "offline": false,
     "packages": [
         "git",
         "unzip",
@@ -161,7 +77,6 @@
         "inetutils",
         "xfce4-terminal"
     ],
-    "parallel downloads": 0,
     "profile_config": {
         "gfx_driver": "All open-source",
         "greeter": "gdm",
@@ -169,18 +84,12 @@
             "custom_settings": {
                 "Xfce4": {}
             },
-            "details": [
-                "Xfce4"
-            ],
+            "details": ["Xfce4"],
             "main": "Desktop"
         }
     },
     "script": "guided",
-    "silent": false,
-    "skip_ntp": false,
-    "skip_version_check": false,
     "swap": true,
     "timezone": "UTC",
-    "uki": false,
-    "version": "2.8.6"
+    "uki": false
 }
