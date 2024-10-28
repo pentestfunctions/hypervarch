@@ -140,7 +140,7 @@
     "parallel downloads": 0,
     "profile_config": {
         "gfx_driver": "All open-source",
-        "greeter": "ly",
+        "greeter": "gdm",
         "profile": {
             "custom_settings": {
                 "Xfce4": {}
