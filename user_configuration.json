@@ -17,13 +17,12 @@
         "cp /home/robot/hypervarch/scripts/resources/terminalrc /home/robot/.config/xfce4/terminal/terminalrc",
         "cp /home/robot/hypervarch/scripts/resources/bashrc /home/robot/.bashrc",
         "cp /home/robot/hypervarch/scripts/resources/xfce4-panel-settings.tar.gz /tmp/; mkdir /home/robot/.config/xfce4/panel/; tar -xzf /tmp/xfce4-panel-settings.tar.gz -C /home/robot/.config/xfce4/panel/",
+        "git clone https://aur.archlinux.org/yay.git; cd yay; makepkg -s",
         "chown -R robot:robot /home/robot",
         "rm /usr/share/wayland-sessions/gnome-wayland.desktop 2>/dev/null || true",
         "rm /usr/share/wayland-sessions/gnome.desktop 2>/dev/null || true",
         "touch /usr/share/wayland-sessions/test.file",
-        "rm /usr/share/xsessions/gnome* 2>/dev/null || true",
-        "git clone https://aur.archlinux.org/yay.git; cd yay; makepkg -s",
-        "",
+        "rm /usr/share/xsessions/gnome* 2>/dev/null || true"
     ],
     "debug": false,
     "disk_config": {
