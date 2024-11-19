@@ -14,7 +14,7 @@
         "cp /home/robot/hypervarch/scripts/resources/terminalrc /home/robot/.config/xfce4/terminal/terminalrc",
         "cp /home/robot/hypervarch/scripts/resources/bashrc /home/robot/.bashrc",
         "cp /home/robot/hypervarch/scripts/resources/xfce4-panel-settings.tar.gz /tmp/; mkdir /home/robot/.config/xfce4/panel/; tar -xzf /tmp/xfce4-panel-settings.tar.gz -C /home/robot/.config/xfce4/panel/",
-        "chown -R robot:robot /home/robot",
+        "chown -R robot:robot /home/robot"
     ],
     "debug": false,
     "disk_config": {
